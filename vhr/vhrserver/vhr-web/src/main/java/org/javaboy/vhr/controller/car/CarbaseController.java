@@ -35,7 +35,7 @@ public class CarbaseController {
         return carService.getCarByPage(page, size, car, beginDateScope);
     }
     @PostMapping("/")
-    public RespBean addEmp(@RequestBody Car car) {
+    public RespBean addCar(@RequestBody Car car) {
         if (carService.addCar(car) == 1) {
             return RespBean.ok("添加成功!");
         }
@@ -43,7 +43,7 @@ public class CarbaseController {
     }
 
     @DeleteMapping("/{id}")
-    public RespBean deleteEmpByEid(@PathVariable String id) {
+    public RespBean deleteCarByEid(@PathVariable String id) {
         if (carService.deleteCarByEid(id) == 1) {
             return RespBean.ok("删除成功!");
         }
@@ -51,7 +51,7 @@ public class CarbaseController {
     }
 
     @PutMapping("/")
-    public RespBean updateEmp(@RequestBody Car car) {
+    public RespBean updateCar(@RequestBody Car car) {
         if (carService.updateCar(car) == 1) {
             return RespBean.ok("更新成功!");
         }
