@@ -29,12 +29,22 @@ public class Car implements Serializable {
     private Double price;
 
     private String enginenum;
-    @JsonFormat(pattern = "yyyy-mm-dd hh:MM:ss",timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss",timezone = "Asia/Shanghai")
     private Date createTime;
     private String createBy;
-    @JsonFormat(pattern = "yyyy-mm-dd hh:MM:ss",timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss",timezone = "Asia/Shanghai")
     private Date updateTime;
     private String updateBy;
+    private Integer outdanger;
+
+    public Integer getOutdanger() {
+        return outdanger;
+    }
+
+    public void setOutdanger(Integer outdanger) {
+        this.outdanger = outdanger;
+    }
+
     private String del_flag;
 
     public String getDel_flag() {
@@ -150,9 +160,15 @@ public class Car implements Serializable {
                 ", model='" + model + '\'' +
                 ", address='" + address + '\'' +
                 ", telphone=" + telphone +
-                ", driverlicense='" + carmaster + '\'' +
+                ", carmaster='" + carmaster + '\'' +
                 ", price=" + price +
                 ", enginenum='" + enginenum + '\'' +
+                ", createTime=" + createTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateTime=" + updateTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", outdanger=" + outdanger +
+                ", del_flag='" + del_flag + '\'' +
                 '}';
     }
 }

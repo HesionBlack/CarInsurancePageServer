@@ -40,7 +40,7 @@ public interface CarinfoMapper {
     @Delete("DELETE FROM car WHERE id = #{id}")
     int deleteCarByEid(String id);
 
-    @Insert("INSERT INTO `car` VALUES(#{id},#{brand},#{model},#{address},#{telphone},#{carmaster},#{price},#{enginenum},#{createTime},#{createBy},#{updateTime},#{updateBy},\"0\")")
+    @Insert("INSERT INTO `car` VALUES(#{id},#{brand},#{model},#{address},#{telphone},#{carmaster},#{price},#{enginenum},#{createTime},#{createBy},#{updateTime},#{updateBy},#{outdanger},\"0\")")
     int addCar(Car car);
 
     @Update({"<script> " +
@@ -60,6 +60,8 @@ public interface CarinfoMapper {
             "price=#{price},</if>" +
             "<if test=\"enginenum != null\">" +
             "enginenum=#{enginenum},</if>" +
+            "<if test=\"outdanger != null\">" +
+            "outdanger=#{outdanger},</if>" +
             "<if test=\"updateTime != null\">" +
             "update_time=#{updateTime},</if>" +
             "<if test=\"updateBy != null\">" +

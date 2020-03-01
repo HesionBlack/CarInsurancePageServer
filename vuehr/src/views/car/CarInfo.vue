@@ -115,6 +115,11 @@
                         label="车架号">
                 </el-table-column>
                 <el-table-column
+                        prop="outdanger"
+                        width="250"
+                        label="出险次数">
+                </el-table-column>
+                <el-table-column
                         prop="createTime"
                         width="160"
                         label="录入时间">
@@ -215,6 +220,13 @@
                                           placeholder="请输入车架号"></el-input>
                             </el-form-item>
                         </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="出险次数:" prop="outdanger">
+                                <el-input size="mini" style="width: 120px" prefix-icon="el-icon-edit"
+                                          v-model="car.outdanger"
+                                          placeholder="请输入出险次数"></el-input>
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                 </el-form>
             </div>
@@ -282,6 +294,7 @@
                     carmaster: "李四",
                     price: 0.00,
                     enginenum: "FSD123213",
+                    outdanger:0
                 },
                 defaultProps: {
                     children: 'children',

@@ -21,12 +21,12 @@ public class Insurance implements Serializable {
     private String desc;
 
     private Double price;
-    @JsonFormat(pattern = "yyyy-mm-dd hh:MM:ss", timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Shanghai")
 
     private Date createTime;
 
     private String createBy;
-    @JsonFormat(pattern = "yyyy-mm-dd hh:MM:ss", timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Shanghai")
 
     private Date updateTime;
 

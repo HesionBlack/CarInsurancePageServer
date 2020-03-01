@@ -48,6 +48,9 @@ public class CarService {
         car.setCreateTime(new Date());
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         car.setCreateBy(name);
+        if(car.getOutdanger()==null){
+            car.setOutdanger(0);
+        }
         return carinfoMapper.addCar(car);
     }
 

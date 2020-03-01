@@ -1,7 +1,6 @@
 package org.javaboy.vhr.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.javaboy.vhr.model.Car;
 import org.javaboy.vhr.model.Insurance;
 
 import java.util.Date;
