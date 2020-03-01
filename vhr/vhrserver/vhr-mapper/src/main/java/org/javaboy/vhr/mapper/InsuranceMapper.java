@@ -20,11 +20,11 @@ public interface InsuranceMapper {
     @Select({"<script> " +
             "SELECT * FROM insurance  WHERE del_flag = '0'" +
             "<if test=\"ins.name != null and ins.name != ''\">" +
-            "AND ins like concat('%',#{ins.name},'%')</if>" +
+            "AND `name` like concat('%',#{ins.name},'%')</if>" +
             "<if test=\"page != null and size != null\">" +
             "limit #{page},#{size}</if>" +
             "</script>"})
-    @Results(id = "CarinfoResult",
+    @Results(id = "InsinfoResult",
             value = {
                     @Result(property = "createTime", column = "create_time"),
                     @Result(property = "updateTime", column = "update_time"),
