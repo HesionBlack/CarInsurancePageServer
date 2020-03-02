@@ -50,6 +50,8 @@ export const formatRoutes = (routes) => {
                     require(['../views/car/' + component + '.vue'], resolve);
                 }else if(component.startsWith("Insurance")){
                     require(['../views/insurance/' + component + '.vue'], resolve);
+                }else if(component.startsWith("Accept")){
+                    require(['../views/accept/' + component + '.vue'], resolve);
                 }
             }
         }
