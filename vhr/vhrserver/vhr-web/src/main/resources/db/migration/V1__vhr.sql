@@ -4,16 +4,40 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 80018
 Source Host           : localhost:3306
-Source Database       : vhr
+Source Database       : carins
 
 Target Server Type    : MYSQL
 Target Server Version : 80018
 File Encoding         : 65001
 
-Date: 2020-03-01 09:17:06
+Date: 2020-03-02 22:04:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for acceptins
+-- ----------------------------
+DROP TABLE IF EXISTS `acceptins`;
+CREATE TABLE `acceptins` (
+  `id` varchar(36) NOT NULL,
+  `carId` varchar(36) DEFAULT NULL,
+  `insId` varchar(36) DEFAULT NULL,
+  `finalprice` decimal(10,2) DEFAULT NULL,
+  `accept` int(255) DEFAULT NULL,
+  `duration` int(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(255) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `update_by` varchar(255) DEFAULT NULL,
+  `del_flag` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of acceptins
+-- ----------------------------
+INSERT INTO `acceptins` VALUES ('asdad', 'eda7be19-bd17-4cd1-b', '1', '2000.00', '2', '6', '2020-03-01 15:48:58', 'admin', '2020-03-02 19:35:53', 'admin', '0');
 
 -- ----------------------------
 -- Table structure for adjustsalary
@@ -73,6 +97,7 @@ CREATE TABLE `car` (
   `createby` varchar(25) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `updateby` varchar(36) DEFAULT NULL,
+  `outdanger` int(100) DEFAULT NULL,
   `del_flag` varchar(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -80,8 +105,9 @@ CREATE TABLE `car` (
 -- ----------------------------
 -- Records of car
 -- ----------------------------
-INSERT INTO `car` VALUES ('18761180-552e-4f68-a', '奥迪A4', 'SDSD', '飒飒', '221312312', '试试', '12', '2222SDS', '2020-02-29 16:00:56', 'admin', null, null, '0');
-INSERT INTO `car` VALUES ('3', '蔚来汽车', 'ES6', '浙江杭州', '2222222', '张思', '32', '212121212122', '2020-02-29 08:24:56', '李四', '2020-02-29 20:00:21', 'admin', '0');
+INSERT INTO `car` VALUES ('18761180-552e-4f68-a', '奥迪A4', 'SDSD', '浙江杭州', '221312312', '试试', '12', '2222SDS', '2020-02-29 16:00:56', 'admin', '2020-03-01 15:34:10', 'admin', '0', '0');
+INSERT INTO `car` VALUES ('3', '蔚来汽车', 'ES6', '浙江杭州', '2222222', '张思', '32', '212121212122', '2020-02-29 08:24:56', '李四', '2020-02-29 20:00:21', 'admin', '0', '0');
+INSERT INTO `car` VALUES ('eda7be19-bd17-4cd1-b', '苏打水', 'AS大S的', '阿达达', '123123', '阿达达', '2323', 'zxda213', '2020-03-01 15:37:58', 'admin', null, null, '6', '0');
 
 -- ----------------------------
 -- Table structure for department
@@ -911,6 +937,7 @@ CREATE TABLE `flyway_schema_history` (
 -- ----------------------------
 INSERT INTO `flyway_schema_history` VALUES ('1', '1', 'vhr', 'SQL', 'V1__vhr.sql', '-1242848674', 'root', '2020-02-28 16:34:21', '1632', '1');
 INSERT INTO `flyway_schema_history` VALUES ('2', '2', 'Create Table Car', 'SQL', 'V2__Create_Table_Car.sql', '0', 'root', '2020-02-28 20:38:40', '4', '1');
+INSERT INTO `flyway_schema_history` VALUES ('3', '1', 'vhr', 'SQL', 'V1__vhr.sql', '819004090', 'root', '2020-03-01 09:43:18', '1919', '1');
 
 -- ----------------------------
 -- Table structure for hr
@@ -970,6 +997,29 @@ INSERT INTO `hr_role` VALUES ('49', '10', '4');
 INSERT INTO `hr_role` VALUES ('72', '5', '1');
 INSERT INTO `hr_role` VALUES ('73', '5', '2');
 INSERT INTO `hr_role` VALUES ('74', '5', '3');
+
+-- ----------------------------
+-- Table structure for insurance
+-- ----------------------------
+DROP TABLE IF EXISTS `insurance`;
+CREATE TABLE `insurance` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `price` decimal(10,0) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `createby` varchar(36) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `updateby` varchar(36) DEFAULT NULL,
+  `del_flag` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of insurance
+-- ----------------------------
+INSERT INTO `insurance` VALUES ('1', '交强险', '必须交的险种', '20000', '2020-03-01 10:02:37', 'admin', null, null, '0');
+INSERT INTO `insurance` VALUES ('f4fe0a21-c85b-4bf1-9', '试试', '试试2', '231303', '2020-03-01 11:09:19', 'admin', '2020-03-01 14:53:39', 'admin', '0');
 
 -- ----------------------------
 -- Table structure for joblevel
@@ -1034,7 +1084,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `parentId` (`parentId`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
@@ -1069,6 +1119,7 @@ INSERT INTO `menu` VALUES ('27', '/system/data/**', '/sys/data', 'SysData', '备
 INSERT INTO `menu` VALUES ('28', '/system/init/**', '/sys/init', 'SysInit', '初始化数据库', null, null, '1', '6', '1');
 INSERT INTO `menu` VALUES ('29', '/car/basic/**', '/car/info', 'CarInfo', '车辆信息管理', null, null, '1', '2', '1');
 INSERT INTO `menu` VALUES ('30', '/insurance/basic/**', '/insurance/info', 'InsuranceInfo', '险种信息管理', null, null, '1', '2', '1');
+INSERT INTO `menu` VALUES ('31', '/acceptIns/basic/**', '/accept/info', 'AcceptInfo', '承保信息管理', null, null, '1', '2', '1');
 
 -- ----------------------------
 -- Table structure for menu_role
@@ -1083,13 +1134,12 @@ CREATE TABLE `menu_role` (
   KEY `rid` (`rid`),
   CONSTRAINT `menu_role_ibfk_1` FOREIGN KEY (`mid`) REFERENCES `menu` (`id`),
   CONSTRAINT `menu_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=286 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu_role
 -- ----------------------------
 INSERT INTO `menu_role` VALUES ('161', '7', '3');
-INSERT INTO `menu_role` VALUES ('162', '7', '6');
 INSERT INTO `menu_role` VALUES ('247', '7', '4');
 INSERT INTO `menu_role` VALUES ('248', '8', '4');
 INSERT INTO `menu_role` VALUES ('249', '11', '4');
@@ -1126,6 +1176,7 @@ INSERT INTO `menu_role` VALUES ('281', '8', '14');
 INSERT INTO `menu_role` VALUES ('282', '9', '14');
 INSERT INTO `menu_role` VALUES ('283', '29', '6');
 INSERT INTO `menu_role` VALUES ('284', '30', '6');
+INSERT INTO `menu_role` VALUES ('285', '31', '6');
 
 -- ----------------------------
 -- Table structure for msgcontent
@@ -1388,6 +1439,12 @@ INSERT INTO `sysmsg` VALUES ('78', '18', '0', '5', '0');
 INSERT INTO `sysmsg` VALUES ('79', '18', '0', '10', '0');
 INSERT INTO `sysmsg` VALUES ('80', '18', '0', '11', '0');
 INSERT INTO `sysmsg` VALUES ('81', '18', '0', '12', '0');
+
+-- ----------------------------
+-- View structure for v_accpet_view
+-- ----------------------------
+DROP VIEW IF EXISTS `v_accpet_view`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_accpet_view` AS select `acceptins`.`id` AS `id`,`acceptins`.`carId` AS `carId`,`acceptins`.`insId` AS `insId`,concat(`car`.`brand`,`car`.`model`) AS `carbrand`,`car`.`carmaster` AS `carmaster`,`insurance`.`name` AS `name`,`acceptins`.`finalprice` AS `finalprice`,`acceptins`.`accept` AS `accept`,`acceptins`.`duration` AS `duration`,`acceptins`.`create_time` AS `create_time`,`acceptins`.`create_by` AS `create_by`,`acceptins`.`update_time` AS `update_time`,`acceptins`.`update_by` AS `update_by`,`acceptins`.`del_flag` AS `del_flag` from ((`acceptins` left join `car` on((`acceptins`.`carId` = `car`.`id`))) left join `insurance` on((`insurance`.`id` = `acceptins`.`insId`))) ;
 
 -- ----------------------------
 -- Procedure structure for addDep
