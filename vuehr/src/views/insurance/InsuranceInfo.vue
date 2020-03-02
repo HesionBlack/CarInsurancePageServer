@@ -391,7 +391,7 @@
                 this.loading = true;
                 let url = '/insurance/basic/?page=' + this.page + '&size=' + this.size;
                 if (type && type === 'advanced') {
-                    if (this.searchValue.brand) {
+                    if (this.searchValue.name) {
                         url += '&name=' + this.searchValue.name;
                     }
                 } else {

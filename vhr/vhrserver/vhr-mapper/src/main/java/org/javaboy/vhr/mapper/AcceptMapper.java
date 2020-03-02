@@ -29,7 +29,7 @@ public interface AcceptMapper {
             "<if test=\"page != null and size != null\">" +
             "limit #{page},#{size}</if>" +
             "</script>"})
-    @Results(id = "AcceptInfoResult",
+    @Results(id = "AcceptResult",
             value = {
                     @Result(property = "createTime", column = "create_time"),
                     @Result(property = "updateTime", column = "update_time"),
@@ -49,6 +49,6 @@ public interface AcceptMapper {
             "</script>"})
     Long getTotal(VAccpetView vac, Date[] beginDateScope);
 
-    @Update("UPDATE acceptins SET accept =#{accept} WHERE id = #{id}")
+    @Update("UPDATE acceptins SET accept=#{accept},update_time=#{updateTime},update_by=#{updateBy} WHERE id = #{id}")
     int handleAccept(Acceptins acceptins);
 }

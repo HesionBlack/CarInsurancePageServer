@@ -32,7 +32,7 @@ public class AcceptInsController {
     AcceptService acceptService;
 
     @GetMapping("/")
-    public RespPageBean getEmployeeByPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size, VAccpetView vAccpetView, Date[] beginDateScope) {
+    public RespPageBean getAcceptByPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size, VAccpetView vAccpetView, Date[] beginDateScope) {
         return acceptService.getAcceptByPage(page, size, vAccpetView, beginDateScope);
     }
     @PutMapping("/{id}/{type}")

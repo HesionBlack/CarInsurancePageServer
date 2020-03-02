@@ -15,6 +15,8 @@ public class VAccpetView implements Serializable {
     private static final long serialVersionUID = -11129623807251545L;
 
     private String id;
+    private String carId;
+    private String insId;
 
     private String carbrand;
 
@@ -23,7 +25,7 @@ public class VAccpetView implements Serializable {
     private String name;
 
     private Double finalprice;
-
+    private Integer duration;
     private Integer accept;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Shanghai")
     private Date createTime;
@@ -32,9 +34,33 @@ public class VAccpetView implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Shanghai")
     private Date updateTime;
 
-    private Date updateBy;
+    private String updateBy;
 
     private String del_flag;
+
+    public String getCarId() {
+        return carId;
+    }
+
+    public void setCarId(String carId) {
+        this.carId = carId;
+    }
+
+    public String getInsId() {
+        return insId;
+    }
+
+    public void setInsId(String insId) {
+        this.insId = insId;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
 
     public Integer getAccept() {
         return accept;
@@ -116,12 +142,11 @@ public class VAccpetView implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Date getUpdateBy() {
+    public String getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(Date updateBy) {
+    public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
-
 }

@@ -103,6 +103,15 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                        prop="duration"
+                        width="120"
+                        label="投保时长">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.duration}}</span>
+                        年
+                    </template>
+                </el-table-column>
+                <el-table-column
                         prop="createTime"
                         width="160"
                         label="投保时间">

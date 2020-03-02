@@ -21,6 +21,7 @@ public class Acceptins implements Serializable {
     private Double finalprice;
     
     private Integer accept;
+    private Integer duration;
     
     private Date createTime;
     
@@ -32,6 +33,13 @@ public class Acceptins implements Serializable {
     
     private String del_flag;
 
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
 
     public String getId() {
         return id;

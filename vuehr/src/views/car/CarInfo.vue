@@ -142,11 +142,16 @@
                 </el-table-column>
                 <el-table-column
                         fixed="right"
-                        width="200"
+                        width="230"
                         label="操作">
                     <template slot-scope="scope">
                         <el-button @click="showEditCarView(scope.row)" style="padding: 3px" size="mini">编辑</el-button>
-                        <el-button style="padding: 3px" size="mini" type="primary">查看投保</el-button>
+                        <el-button style="padding: 3px" size="mini" type="primary" @click="lookInsurance(scope.row)">
+                            查看投保
+                        </el-button>
+                        <el-button style="padding: 3px" size="mini" type="primary" @click="applyInsurance(scope.row)">
+                            申请车险
+                        </el-button>
                         <el-button @click="deleteCar(scope.row)" style="padding: 3px" size="mini" type="danger">删除
                         </el-button>
                     </template>
@@ -231,10 +236,153 @@
                 </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="doAddCar">确 定</el-button>
-  </span>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="doAddCar">确 定</el-button>
+            </span>
         </el-dialog>
+
+        <el-dialog
+                title="该车辆的投保情况"
+                :visible.sync="dialogVisible2"
+                width="100%"
+                center>
+            <div style="margin-top: 10px">
+                <el-table
+                        :data="lookInses"
+                        stripe
+                        border
+                        v-loading="loading"
+                        element-loading-text="正在加载..."
+                        element-loading-spinner="el-icon-loading"
+                        element-loading-background="rgba(0, 0, 0, 0.8)"
+                        style="width: 100%">
+                    <el-table-column
+                            type="selection"
+                            width="55">
+                    </el-table-column>
+                    <el-table-column
+                            prop="id"
+                            align="left"
+                            fixed
+                            label="承保单号"
+                            width="200">
+                    </el-table-column>
+                    <el-table-column
+                            prop="carbrand"
+                            label="品牌型号"
+                            width="85">
+                    </el-table-column>
+                    <el-table-column
+                            prop="carmaster"
+                            width="110"
+                            fixed="right"
+                            label="车主姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            width="120"
+                            label="险种姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="finalprice"
+                            width="120"
+                            label="应付价格">
+                    </el-table-column>
+                    <el-table-column
+                            prop="accept"
+                            width="120"
+                            label="申请状态">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.accept===0">未处理</span>
+                            <span v-if="scope.row.accept===1" style="color: #b2e281">同意</span>
+                            <span v-if="scope.row.accept===2" style="color: #e30007">拒绝</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="createTime"
+                            width="160"
+                            label="投保时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="createBy"
+                            width="140"
+                            label="投保操作人">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            width="200"
+                            fixed="right"
+                            label="最新操作时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateBy"
+                            width="200"
+                            fixed="right"
+                            label="操作人">
+                    </el-table-column>
+                </el-table>
+                <div style="display: flex;justify-content: flex-end">
+                    <el-pagination
+                            background
+                            @current-change="currentChange"
+                            @size-change="sizeChange"
+                            layout="sizes, prev, pager, next, jumper, ->, total, slot"
+                            :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+        </el-dialog>
+        <el-dialog
+                :title="title"
+                :visible.sync="dialogVisible3"
+                width="20%">
+            <div>
+                <el-form :model="car" :rules="rules" ref="carForm">
+                    <el-row>
+                        <el-form-item label="请选择险种:">
+                            <el-select v-model="applyIns.insId" placeholder="请选择">
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="请输入承保年限:">
+                            <el-input type="number" size="mini" style="width: 120px" prefix-icon="el-icon-edit"
+                                      v-model="applyIns.duration"
+                                      placeholder="请输入承保年限" @blur="changeFinalPrice()"></el-input>
+                            <span>年</span>
+                        </el-form-item>
+                        <el-form-item label="请输入基础保费:">
+                            <el-input type="number" size="mini" style="width: 120px" prefix-icon="el-icon-edit"
+                                      v-model="applyIns.basePrice"
+                                      placeholder="请输入基础保费" @blur="changeFinalPrice()"></el-input>
+                            <span>元</span>
+                        </el-form-item>
+                        <el-form-item label="该车辆出险次数:">
+                            <el-input size="mini" disabled style="width: 120px" prefix-icon="el-icon-edit"
+                                      v-model="car.outdanger"
+                                      placeholder="该车辆出险次数"></el-input>
+                            <span>次</span>
+                        </el-form-item>
+                        <el-form-item label="提示:">
+                            <span style="font-size: 20px;color: #e30007">{{tip}}</span>
+                        </el-form-item>
+                        <el-form-item label="最终价格:">
+                            <span style="font-size: 20px;color: #409eff">￥{{applyIns.finalPrice}}元</span>
+                        </el-form-item>
+                    </el-row>
+
+                </el-form>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click=" dialogVisible3= false">取 消</el-button>
+                <el-button type="primary" @click="apply()">申请</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -255,10 +403,22 @@
                 showAdvanceSearchView: false,
                 allDeps: [],
                 cars: [],
+                applyIns: {
+                    id: "",
+                    carId: "",
+                    insId: "",
+                    duration: 0,
+                    basePrice: 0.00,
+                    finalPrice: 0.00,
+                },
+                tip:"",
                 loading: false,
                 popVisible: false,
                 popVisible2: false,
                 dialogVisible: false,
+                dialogVisible2: false,
+                dialogVisible3: false,
+                lookInses: [],
                 total: 0,
                 page: 1,
                 keyword: '',
@@ -294,7 +454,7 @@
                     carmaster: "李四",
                     price: 0.00,
                     enginenum: "FSD123213",
-                    outdanger:0
+                    outdanger: 0
                 },
                 defaultProps: {
                     children: 'children',
@@ -308,6 +468,8 @@
                     carmaster: [{required: true, message: '请输入车主姓名', trigger: 'blur'}],
                     price: [{required: true, message: '请输入车辆价值', trigger: 'blur'}],
                     enginenum: [{required: true, message: '请输入车架号', trigger: 'blur'}],
+
+
                 }
             }
         },
@@ -317,6 +479,46 @@
             // this.initPositions();
         },
         methods: {
+            changeFinalPrice() {
+                var temp=this.applyIns.finalPrice;
+                console.log("b", this.applyIns.basePrice);
+                // 承保年限大于3年 享受8折
+                if (this.applyIns.duration < 3) {
+                    temp = this.applyIns.basePrice;
+                    this.tip="不享受折扣";
+                }else{
+                    this.tip="承保年限大于3年 享受8折";
+                    temp = this.applyIns.basePrice*0.8;
+                }
+                // 无出险次数 优惠8折
+                if (this.car.outdanger === 0) {
+                    temp = this.applyIns.basePrice * (1 - 0.2);
+                    this.tip="无出险次数 优惠8折";
+                } else if (this.car.outdanger > 1) {
+                    switch (this.car.outdanger) {
+                        case 2:
+                            temp = this.applyIns.basePrice * (1 + 0.25);
+                            this.tip="出险次数为2次，保费增加25%";
+                            break;
+                        case 3:
+                            temp = this.applyIns.basePrice * (1 + 0.5);
+                            this.tip="出险次数为2次，保费增加50%";
+                            break;
+                        case 4:
+                            temp = this.applyIns.basePrice * (1 + 0.75);
+                            this.tip="出险次数为2次，保费增加75%";
+                            break;
+                    }
+                    console.log("t", temp);
+                }
+                if (this.car.outdanger >= 5) {
+                    temp = this.applyIns.basePrice * 2;
+                    this.tip="出险次数大于5次，保费翻倍";
+                    console.log("t", temp);
+                }
+                this.applyIns.finalPrice=temp;
+                console.log("e f",this.applyIns.finalPrice)
+            },
             searvhViewHandleNodeClick(data) {
                 this.inputDepName = data.name;
                 this.searchValue.departmentId = data.id;
@@ -358,6 +560,34 @@
                 this.title = '编辑车辆信息';
                 this.car = data;
                 this.dialogVisible = true;
+            },
+            applyInsurance(data) {
+                this.dialogVisible3 = true;
+                this.applyIns = {
+                    id: "",
+                    carId: "",
+                    insId: "",
+                    duration: 0,
+                    basePrice: 0.00,
+                    finalPrice: 0.00
+                };
+                this.car = data;
+                this.getRequest("/apply/insList/").then(resp => {
+                    if (resp) {
+                        this.options = resp;
+                    }
+                })
+            },
+            lookInsurance(data) {
+                this.dialogVisible2 = true;
+                this.DialogDataLoading(data.id);
+            },
+            DialogDataLoading(data) {
+                this.getRequest("/lookIns/basic/" + data).then(resp => {
+                    if (resp) {
+                        this.lookInses = resp.data;
+                    }
+                })
             },
             deleteCar(data) {
                 this.$confirm('此操作将永久删除【' + data.id + '】, 是否继续?', '提示', {
