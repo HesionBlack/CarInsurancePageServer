@@ -10,14 +10,14 @@ package org.javaboy.vhr.controller.insurance;
  */
 
 import org.javaboy.vhr.mapper.InsuranceMapper;
-import org.javaboy.vhr.model.InsList;
+import org.javaboy.vhr.model.*;
 import org.javaboy.vhr.service.ApplyInsService;
+import org.javaboy.vhr.utils.POIUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,8 +33,16 @@ public class ApplyInsController {
     ApplyInsService applyInsService;
 
     @GetMapping("/insList")
-    public List<InsList> getList(){
+    public List<Insurance> getList(){
 
         return applyInsService.getList();
+    }
+
+    @PostMapping("/")
+    public RespBean apply(@RequestBody ApplyBean applyBean) throws IOException {
+        if (applyInsService.apply(applyBean) == 1) {
+            return RespBean.ok("申请成功");
+        }
+        return RespBean.error("申请失败");
     }
 }

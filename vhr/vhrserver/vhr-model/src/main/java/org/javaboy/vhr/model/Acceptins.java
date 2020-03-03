@@ -14,9 +14,9 @@ public class Acceptins implements Serializable {
     
     private String id;
     
-    private String carid;
+    private String carId;
     
-    private String insid;
+    private String insId;
     
     private Double finalprice;
     
@@ -49,20 +49,20 @@ public class Acceptins implements Serializable {
         this.id = id;
     }
 
-    public String getCarid() {
-        return carid;
+    public String getCarId() {
+        return carId;
     }
 
-    public void setCarid(String carid) {
-        this.carid = carid;
+    public void setCarId(String carId) {
+        this.carId = carId;
     }
 
-    public String getInsid() {
-        return insid;
+    public String getInsId() {
+        return insId;
     }
 
-    public void setInsid(String insid) {
-        this.insid = insid;
+    public void setInsId(String insId) {
+        this.insId = insId;
     }
 
     public Double getFinalprice() {

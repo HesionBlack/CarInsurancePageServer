@@ -1,7 +1,9 @@
 package org.javaboy.vhr.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.javaboy.vhr.model.Acceptins;
 import org.javaboy.vhr.model.Insurance;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface ApplyInsMapper {
     @Select("SELECT * FROM insurance WHERE del_flag='0'")
     List<Insurance> getList();
 
+    @Insert("INSERT INTO acceptins VALUES(#{id},#{carId},#{insId},#{finalprice},#{accept},#{duration},#{createTime},#{createBy},#{updateTime},#{updateBy},#{del_flag})")
+    int apply(Acceptins acceptins);
 }

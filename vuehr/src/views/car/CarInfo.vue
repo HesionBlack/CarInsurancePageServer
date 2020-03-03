@@ -337,15 +337,15 @@
                 :visible.sync="dialogVisible3"
                 width="20%">
             <div>
-                <el-form :model="car" :rules="rules" ref="carForm">
+                <el-form :model="applyIns" :rules="rules" ref="applyForm">
                     <el-row>
-                        <el-form-item label="请选择险种:">
+                        <el-form-item label="请选择险种:" prop="insId">
                             <el-select v-model="applyIns.insId" placeholder="请选择">
                                 <el-option
                                         v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -428,22 +428,7 @@
                 politicsstatus: [],
                 positions: [],
                 tiptopDegrees: ['本科', '大专', '硕士', '博士', '高中', '初中', '小学', '其他'],
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
+                options: [],
                 inputDepName: '所属部门',
                 car: {
                     id: "",
@@ -468,6 +453,7 @@
                     carmaster: [{required: true, message: '请输入车主姓名', trigger: 'blur'}],
                     price: [{required: true, message: '请输入车辆价值', trigger: 'blur'}],
                     enginenum: [{required: true, message: '请输入车架号', trigger: 'blur'}],
+                    insId: [{required: true, message: '请选择险种', trigger: 'blur'}],
 
 
                 }
@@ -561,6 +547,21 @@
                 this.car = data;
                 this.dialogVisible = true;
             },
+            apply(){
+                this.applyIns.carId=this.car.id;
+                var temp = this.applyIns;
+                console.log("apply:",temp);
+                this.$refs['applyForm'].validate(valid => {
+                    if (valid) {
+                        this.postRequest("/apply/",temp).then(resp => {
+                            if (resp) {
+                                this.dialogVisible3=false;
+                                this.initCars();
+                            }
+                        })
+                    }
+                });
+            },
             applyInsurance(data) {
                 this.dialogVisible3 = true;
                 this.applyIns = {
@@ -574,7 +575,7 @@
                 this.car = data;
                 this.getRequest("/apply/insList/").then(resp => {
                     if (resp) {
-                        this.options = resp;
+                        this.options=resp;
                     }
                 })
             },

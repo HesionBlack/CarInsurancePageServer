@@ -10,13 +10,18 @@ package org.javaboy.vhr.service;
  */
 
 import org.javaboy.vhr.mapper.ApplyInsMapper;
+import org.javaboy.vhr.model.Acceptins;
+import org.javaboy.vhr.model.ApplyBean;
 import org.javaboy.vhr.model.InsList;
 import org.javaboy.vhr.model.Insurance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: vhr
@@ -28,15 +33,22 @@ import java.util.List;
 public class ApplyInsService {
     @Autowired
     ApplyInsMapper applyInsMapper;
-    public List<InsList> getList() {
-        List<InsList> insLists = new ArrayList<>();
+    public List<Insurance> getList() {
         List<Insurance> list = applyInsMapper.getList();
-        for (Insurance insurance : list) {
-            InsList insList = new InsList();
-            insList.setValue(insurance.getName());
-            insList.setLable(insurance.getId());
-          insLists.add(insList);
-        }
-        return insLists;
+        return list;
+    }
+
+    public int apply(ApplyBean applyBean) {
+        Acceptins acceptins = new Acceptins();
+        acceptins.setId(UUID.randomUUID().toString());
+        acceptins.setCarId(applyBean.getCarId());
+        acceptins.setFinalprice(applyBean.getFinalPrice());
+        acceptins.setInsId(applyBean.getInsId());
+        acceptins.setAccept(0);
+        acceptins.setDuration(applyBean.getDuration());
+        acceptins.setCreateTime(new Date());
+        acceptins.setCreateBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        acceptins.setDel_flag("0");
+        return applyInsMapper.apply(acceptins);
     }
 }
